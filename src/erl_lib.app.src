@@ -1,0 +1,7 @@
+{application, erl_lib,
+ [{description, "Lib Module Collection"},
+  {vsn, "1.0"},
+  {modules, []},
+  {registered, []},
+  {env, []},
+  {applications, []}]}.
