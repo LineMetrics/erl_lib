@@ -47,6 +47,20 @@ hexstring(<<X:128/big-unsigned-integer>>) ->
 
 c_md5(String) ->
 	hexstring(erlang:md5(String)).
+
+binary_to_integer(Bin) ->
+  list_to_integer(binary_to_list(Bin)).
+%% binary_to_number will first try to parse a float,
+%% if this fails it parses the given bin as an integer
+binary_to_number(Bin) ->
+  list_to_number(binary_to_list(Bin)).
+
+list_to_number(List) ->
+  try list_to_float(List)
+  catch
+    error:badarg ->
+      list_to_integer(List)
+  end.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% lists %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 shuffle(List) -> 
