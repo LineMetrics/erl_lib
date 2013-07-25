@@ -18,6 +18,16 @@
 %% API Functions
 %%
 
+%%%%%%%%%%%%% apps %%%%%%%%%%%%%%%%%%%%%
+appvar(App, Key) when is_atom(App) ->
+   appvar(App, Key, undefined).
+appvar(App, Key, Default) when is_atom(App) ->
+   case application:get_env(App, Key) of
+      {ok, Val} -> Val;
+      undefined -> Default
+   end.
+
+
 % get secs since 1970
 unix_timestamp() ->
 	LocalDateTime = calendar:datetime_to_gregorian_seconds({date(),time()}),
