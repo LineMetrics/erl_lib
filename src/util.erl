@@ -45,6 +45,11 @@ erl_stamp() ->
 current_micro() ->
   {MegaSecs, Secs, MicroSecs} = os:timestamp(),
 	(MegaSecs*1000000 + Secs) * 1000000 + MicroSecs.
+	
+% get milliseconds since 1/1/1970
+current_ms() ->
+   {Mega, Sec, Micro} = os:timestamp(),
+   (Mega*1000000 + Sec)*1000 + round(Micro/1000).
 
 % get date in the form DayMonthYear
 get_date() ->
