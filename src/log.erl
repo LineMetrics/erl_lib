@@ -1,9 +1,7 @@
 %% LineMetrics 2013
 -module(log).
 
--export([put/3, put/2]).
-
--define(LOG, log:put).
+-export([put/3, put/2]). 
 
 %% 0: nothing
 %% 1: important things
