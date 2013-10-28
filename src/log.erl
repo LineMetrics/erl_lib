@@ -3,6 +3,8 @@
 
 -export([put/3, put/2]).
 
+-define(LOG, log:put).
+
 %% 0: nothing
 %% 1: important things
 %% 2: even more things
