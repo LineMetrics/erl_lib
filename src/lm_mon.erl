@@ -24,6 +24,7 @@
 -define(PORT_OWN, 4465).
 
 -define(SEP, <<":">>).
+-define(STAR, <<"*">>).
 
 %% socket options for upd socket
 -define(SOCKET_OPTIONS, [binary, {active, false}, {reuseaddr, true}]).
@@ -33,7 +34,10 @@
 %%%===================================================================
 
 stat(Type, TypeId, Value) ->
-   gen_server:cast(?SERVER, {stats, Type, TypeId, Value}).
+   stat(Type, TypeId, Value, ?STAR).
+
+stat(Type, TypeId, Value, Template) ->
+   gen_server:cast(?SERVER, {stats, Type, TypeId, Value, Template}).
 
 
 %%--------------------------------------------------------------------
@@ -103,9 +107,9 @@ handle_call(_Request, _From, State) ->
    {noreply, NewState :: #state{}} |
    {noreply, NewState :: #state{}, timeout() | hibernate} |
    {stop, Reason :: term(), NewState :: #state{}}).
-handle_cast({stats, Type, TypeId, Value}=Req, #state{socket= Socket, prefix = Prefix} = State) ->
+handle_cast({stats, Type, TypeId, Value, Template}=Req, #state{socket= Socket, prefix = Prefix} = State) ->
 %%    lager:debug("got stats req: ~p~n",[Req]),
-   Message = [Prefix, Type, <<"_">>, TypeId, ?SEP, <<"*">>, ?SEP, Value],
+   Message = [Prefix, Type, <<"_">>, TypeId, ?SEP, Template, ?SEP, Value],
 %%    lager:debug("Message will be: ~p~n",[iolist_to_binary(Message)]),
    case gen_udp:send(Socket, State#state.target_host, State#state.target_port, Message) of
 
