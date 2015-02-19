@@ -5,7 +5,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start_link/0, stat/3, start_link/1, stat/4]).
+-export([start_link/0, stat/3, start_link/1, stat/4, test/0]).
 
 %% gen_server callbacks
 -export([init/1,
@@ -177,3 +177,11 @@ code_change(_OldVsn, State, _Extra) ->
 open(Port) ->
    {ok, Socket} = gen_udp:open(Port, ?SOCKET_OPTIONS),
    Socket.
+
+%%%===================================================================
+%%% TESTS
+%%%===================================================================
+test() ->
+   {ok, _S} = lm_mon:start_link(),
+   lm_mon:stat(<<"test">>, <<"1">>, <<"5">>),
+   lm_mon:stat(<<"test">>, <<"1">>, <<"5">>, <<"api-val-count">>).
