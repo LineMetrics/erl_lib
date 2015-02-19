@@ -182,6 +182,6 @@ open(Port) ->
 %%% TESTS
 %%%===================================================================
 test() ->
-   {ok, _S} = lm_mon:start_link([?HOST, ?PORT, <<"some_app">>]),
+   lm_mon:start_link([?HOST, ?PORT, <<"some_app">>]),
    lm_mon:stat(<<"test">>, <<"1">>, <<"5">>),
    lm_mon:stat(<<"test">>, <<"1">>, <<"5">>, <<"api-val-count">>).
