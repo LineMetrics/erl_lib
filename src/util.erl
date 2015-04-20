@@ -27,10 +27,12 @@ appvar(App, Key, Default) when is_atom(App) ->
       undefined -> Default
    end.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% DATE and TIME                                                         %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % get secs since 1970
 unix_timestamp() ->
-	LocalDateTime = calendar:datetime_to_gregorian_seconds({date(),time()}),
+   LocalDateTime = calendar:datetime_to_gregorian_seconds({date(),time()}),
    UnixEpoch = calendar:datetime_to_gregorian_seconds({{1970,1,1},{0,0,0}}),
    LocalDateTime - UnixEpoch
 	.
@@ -55,6 +57,18 @@ current_ms() ->
 get_date() ->
 	{Year, Month, Day} = erlang:date(),
 	io_lib:format("~p~p~p",[Day, Month, Year]).
+
+unix_ms_to_iso8601(UnixMsTs) ->
+   MicroTs = UnixMsTs * 1000,
+   TS = {_, _, Micro1} = { MicroTs div 1000000000000,
+      MicroTs div 1000000 rem 1000000,
+      MicroTs rem 1000000},
+
+   {{Year,Month,Day},{Hour,Minute,Second}} = calendar:now_to_universal_time(TS),
+   Fmt = "~.4.0w-~.2.0w-~.2.0wT~.2.0w:~.2.0w:~.2.0w.~.3.0wZ",
+   iolist_to_binary(io_lib:format(Fmt, [Year,Month,Day,Hour,Minute,Second, Micro1 div 1000 rem 1000])).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% string to hex
 hexstring(<<X:128/big-unsigned-integer>>) ->
