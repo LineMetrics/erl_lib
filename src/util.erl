@@ -118,7 +118,13 @@ tuplize([], _, Acc) ->
 	Acc.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% structs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+struct_filter(_Key, undefined, Struct) ->
+   Struct;
+struct_filter(Key, Val, Struct) ->
+   struct:set_value(Key, Val, Struct).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
